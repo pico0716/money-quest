@@ -80,7 +80,7 @@
 
   function renderScene() {
     const scene = AREA1.scenes[state.sceneIndex];
-    const isLast = state.sceneIndex === TOTAL_SCENES - 1;
+    const isLast = scene.next === 'boss';
     const pct    = Math.round((state.sceneIndex / TOTAL_SCENES) * 100);
     const isSpeakerNarrator = scene.speaker === 'ナレーター';
 
@@ -141,8 +141,10 @@
       });
     } else {
       document.getElementById('nextBtn').addEventListener('click', () => {
-        if (isLast) {
+        if (scene.next === 'boss') {
           state.phase = 'boss';
+        } else if (scene.next !== undefined) {
+          state.sceneIndex = scene.next;
         } else {
           state.sceneIndex++;
         }
