@@ -228,30 +228,25 @@
 
     $app.querySelectorAll('.btn-choice').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const isCorrect = btn.dataset.correct === 'true';
+        const isCorrect     = btn.dataset.correct === 'true';
         if (isCorrect) state.bossCorrect++;
 
-        $app.querySelectorAll('.btn-choice').forEach((b) => {
-          b.disabled = true;
-          if (b.dataset.correct === 'true') {
-            b.style.background  = 'rgba(74,222,128,0.18)';
-            b.style.borderColor = 'var(--success)';
-            b.style.color       = 'var(--success)';
-          }
-        });
+        const selectedText  = btn.textContent.trim();
+        const correctChoice = q.choices.find(c => c.correct);
+        const resultCls     = isCorrect ? 'correct' : 'wrong';
+        const resultText    = isCorrect ? '✅ 正解！ボスにダメージ！' : '❌ 不正解…でも学びがある！';
+        const nextLabel     = isLast ? '⚔️ ボスを倒す！' : '次の攻撃へ →';
 
-        const resultText = isCorrect ? '✅ 正解！ボスにダメージ！' : '❌ 不正解…でも学びがある！';
-        const resultCls  = isCorrect ? 'correct' : 'wrong';
-        const nextLabel  = isLast ? '⚔️ ボスを倒す！' : '次の攻撃へ →';
-
-        const resultBlock = document.createElement('div');
-        resultBlock.className = 'result-block';
-        resultBlock.innerHTML = `
-          <div class="choice-result ${resultCls}">${resultText}</div>
-          <div class="explanation">📖 ${esc(q.explanation)}</div>
-          <button class="btn btn-next" id="nextQBtn">${nextLabel}</button>`;
-
-        document.getElementById('choices').after(resultBlock);
+        document.getElementById('choices').outerHTML = `
+          <div class="result-block">
+            <div class="choice-result ${resultCls}">
+              ${resultText}<br>
+              <span style="font-weight:400;font-size:0.82rem;">${esc(selectedText)}</span>
+            </div>
+            ${!isCorrect ? `<div class="choice-result correct">✅ 正解：${esc(correctChoice.text)}</div>` : ''}
+            <div class="explanation">📖 ${esc(q.explanation)}</div>
+            <button class="btn btn-next" id="nextQBtn">${nextLabel}</button>
+          </div>`;
 
         document.getElementById('nextQBtn').addEventListener('click', () => {
           state.bossIndex++;
