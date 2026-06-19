@@ -42,6 +42,39 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ---- Area Select Grid ---- */
+.area-select-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.area-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.area-card:active { background: var(--surface2); }
+.area-card:not(.area-card--locked):hover { border-color: var(--accent); }
+
+.area-card--locked {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.area-card-num  { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 3px; }
+.area-card-name { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 3px; }
+.area-card-boss { font-size: 0.78rem; color: var(--accent2); }
+
 /* ---- Title ---- */
 .title-screen {
   align-items: center;

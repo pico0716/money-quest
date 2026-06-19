@@ -1,23 +1,30 @@
 /* ============================================================
- * engine.js — Money Quest ゲームエンジン
- *   area1.js（AREA1）に依存する。
+ * engine.js — Money Quest ゲームエンジン（複数エリア対応）
+ *   area1.js（AREA1）/ area2.js（AREA2）に依存する。
  * ============================================================ */
 
 (function () {
   'use strict';
 
+  const AREAS = [
+    { data: AREA1, unlocked: true },
+    { data: AREA2, unlocked: true },
+    { data: null,  unlocked: false, comingSoon: 'エリア3：使う迷宮' },
+    { data: null,  unlocked: false, comingSoon: 'エリア4：守る要塞' },
+  ];
+
+  let currentArea = null;
+
   const state = {
-    phase: 'title',   // title | story | boss | clear
+    phase: 'select',  // select | story | boss | clear
     sceneIndex: 0,
-    gold: AREA1.startGold,
+    gold: 100,
     bossIndex: 0,
     bossCorrect: 0,
     lastGoldChange: 0,
   };
 
   const $app = document.getElementById('app');
-  const TOTAL_SCENES = AREA1.scenes.length;
-  const TOTAL_BOSS   = AREA1.quiz.length;
 
   // ---- ユーティリティ ----
 
@@ -37,19 +44,47 @@
     return `<div class="gold-change ${cls}">${sign}${change}コイン</div>`;
   }
 
+  function resetState(area) {
+    currentArea          = area;
+    state.phase          = 'story';
+    state.sceneIndex     = 0;
+    state.gold           = area.startGold;
+    state.bossIndex      = 0;
+    state.bossCorrect    = 0;
+    state.lastGoldChange = 0;
+  }
+
   function render() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     switch (state.phase) {
-      case 'title': renderTitle(); break;
-      case 'story': renderScene(); break;
-      case 'boss':  renderBoss();  break;
-      case 'clear': renderClear(); break;
+      case 'select': renderSelect(); break;
+      case 'story':  renderScene();  break;
+      case 'boss':   renderBoss();   break;
+      case 'clear':  renderClear();  break;
     }
   }
 
-  // ---- タイトル画面 ----
+  // ---- エリア選択画面 ----
 
-  function renderTitle() {
+  function renderSelect() {
+    const areaCards = AREAS.map((a, i) => {
+      if (a.unlocked) {
+        return `
+          <button class="area-card" data-idx="${i}">
+            <div class="area-card-num">エリア ${i + 1}</div>
+            <div class="area-card-name">${esc(a.data.areaName.replace(/^エリア\d+：/, ''))}</div>
+            <div class="area-card-boss">ラスボス：${esc(a.data.bossName)}</div>
+          </button>`;
+      } else {
+        return `
+          <div class="area-card area-card--locked">
+            <div class="area-card-num">🔒</div>
+            <div class="area-card-name">${esc(a.comingSoon.replace(/^エリア\d+：/, ''))}</div>
+            <div class="area-card-boss">Coming Soon</div>
+          </div>`;
+      }
+    }).join('');
+
     $app.innerHTML = `
       <div class="screen title-screen">
         <div class="game-logo">💰 Money Quest</div>
@@ -57,31 +92,31 @@
           RPG形式でお金の知識を冒険しながら学ぼう。<br>
           <span>子どもも大人も一緒にプレイできます。</span>
         </div>
-        <div class="area-badge">
-          <div class="label">今回の冒険</div>
-          <div class="name">${esc(AREA1.areaName)}</div>
-          <div class="boss">ラスボス：${esc(AREA1.bossName)}</div>
-        </div>
+        <div class="area-select-grid">${areaCards}</div>
         <div class="start-note">
-          選択肢によって所持金が変わる。<br>
-          ボス戦の知識クイズを制して魔王を倒せ！<br>
-          <span>所持金：${state.gold}コイン でスタート</span>
+          エリアを選んで冒険を始めよう。<br>
+          <span>金融庁・J-FLECの公式データに基づいた内容です。</span>
         </div>
-        <button class="btn btn-primary" id="startBtn">冒険を始める ▶</button>
       </div>`;
 
-    document.getElementById('startBtn').addEventListener('click', () => {
-      state.phase = 'story';
-      render();
+    $app.querySelectorAll('.area-card[data-idx]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const area = AREAS[Number(btn.dataset.idx)];
+        if (area.unlocked) {
+          resetState(area.data);
+          render();
+        }
+      });
     });
   }
 
   // ---- シナリオ画面 ----
 
   function renderScene() {
-    const scene = AREA1.scenes[state.sceneIndex];
+    const scene  = currentArea.scenes[state.sceneIndex];
+    const total  = currentArea.scenes.length;
     const isLast = scene.next === 'boss';
-    const pct    = Math.round((state.sceneIndex / TOTAL_SCENES) * 100);
+    const pct    = Math.round((state.sceneIndex / total) * 100);
     const isSpeakerNarrator = scene.speaker === 'ナレーター';
 
     const infoHtml = scene.info
@@ -114,7 +149,7 @@
               <div class="progress-fill" style="width:${pct}%"></div>
             </div>
           </div>
-          <div class="scene-count">${state.sceneIndex + 1}/${TOTAL_SCENES}</div>
+          <div class="scene-count">${state.sceneIndex + 1}/${total}</div>
         </div>
         <div class="dialogue-box">
           <div class="speaker-name ${isSpeakerNarrator ? 'narrator' : ''}">${esc(scene.speaker)}</div>
@@ -148,6 +183,11 @@
         } else {
           state.sceneIndex++;
         }
+        // scene.goldChange（選択肢なしの場面での自動加算）
+        if (scene.goldChange && !scene.choices) {
+          state.gold += scene.goldChange;
+          state.lastGoldChange = scene.goldChange;
+        }
         render();
       });
     }
@@ -156,26 +196,28 @@
   // ---- ボス戦 ----
 
   function renderBoss() {
-    if (state.bossIndex >= TOTAL_BOSS) {
+    const quiz = currentArea.quiz;
+    if (state.bossIndex >= quiz.length) {
       state.phase = 'clear';
       render();
       return;
     }
 
-    const q      = AREA1.quiz[state.bossIndex];
-    const hpPct  = Math.round(((TOTAL_BOSS - state.bossIndex) / TOTAL_BOSS) * 100);
-    const isLast = state.bossIndex === TOTAL_BOSS - 1;
+    const q      = quiz[state.bossIndex];
+    const total  = quiz.length;
+    const hpPct  = Math.round(((total - state.bossIndex) / total) * 100);
+    const isLast = state.bossIndex === total - 1;
 
     $app.innerHTML = `
       <div class="screen">
         <div class="boss-header">
-          <div class="boss-name">👹 ${esc(AREA1.bossName)}</div>
+          <div class="boss-name">👹 ${esc(currentArea.bossName)}</div>
           <div class="boss-hp-track">
             <div class="boss-hp-fill" style="width:${hpPct}%"></div>
           </div>
           <div class="boss-hp-label">体力 ${hpPct}%</div>
         </div>
-        <div class="q-counter">第 ${state.bossIndex + 1} 問 ／ 全 ${TOTAL_BOSS} 問</div>
+        <div class="q-counter">第 ${state.bossIndex + 1} 問 ／ 全 ${total} 問</div>
         <div class="question-box">${esc(q.question)}</div>
         <div class="choices" id="choices">
           ${q.choices.map((c, i) =>
@@ -192,17 +234,15 @@
         $app.querySelectorAll('.btn-choice').forEach((b) => {
           b.disabled = true;
           if (b.dataset.correct === 'true') {
-            b.style.background = 'rgba(74,222,128,0.18)';
+            b.style.background  = 'rgba(74,222,128,0.18)';
             b.style.borderColor = 'var(--success)';
-            b.style.color = 'var(--success)';
+            b.style.color       = 'var(--success)';
           }
         });
 
-        const resultText = isCorrect
-          ? '✅ 正解！魔王にダメージ！'
-          : '❌ 不正解…でも学びがある！';
-        const resultCls = isCorrect ? 'correct' : 'wrong';
-        const nextLabel = isLast ? '⚔️ 魔王を倒す！' : '次の攻撃へ →';
+        const resultText = isCorrect ? '✅ 正解！ボスにダメージ！' : '❌ 不正解…でも学びがある！';
+        const resultCls  = isCorrect ? 'correct' : 'wrong';
+        const nextLabel  = isLast ? '⚔️ ボスを倒す！' : '次の攻撃へ →';
 
         const resultBlock = document.createElement('div');
         resultBlock.className = 'result-block';
@@ -225,14 +265,14 @@
 
   function renderClear() {
     const score   = state.bossCorrect;
-    const total   = TOTAL_BOSS;
+    const total   = currentArea.quiz.length;
     const perfect = score === total;
-    const scoreColor = score === total ? 'var(--success)' : 'var(--accent)';
+    const scoreColor = perfect ? 'var(--success)' : 'var(--accent)';
 
     $app.innerHTML = `
       <div class="screen clear-screen">
         <div class="clear-title">${perfect ? '🏆 完全勝利！' : '⚔️ 討伐完了！'}</div>
-        <div class="clear-sub">${esc(AREA1.bossName)}を倒した！</div>
+        <div class="clear-sub">${esc(currentArea.bossName)}を倒した！</div>
 
         <div class="stat-card">
           <div class="label">最終所持金</div>
@@ -246,30 +286,31 @@
 
         <div class="knowledge-list">
           <h3>今回学んだこと</h3>
-          ${AREA1.knowledge.map(k => `<div class="knowledge-item">${esc(k)}</div>`).join('')}
+          ${currentArea.knowledge.map(k => `<div class="knowledge-item">${esc(k)}</div>`).join('')}
         </div>
 
         <div class="adult-card">
           <div class="label">📊 大人の方へ：あなたの投資スタイルは？</div>
-          <a href="${encodeURI(AREA1.links.quiz)}" target="_blank" rel="noopener">
+          <a href="${encodeURI(currentArea.links.quiz)}" target="_blank" rel="noopener">
             投資スタイル診断をやってみる →
           </a>
         </div>
 
-        <a class="btn btn-ghost" href="https://x.com/intent/tweet?text=${encodeURIComponent('Money Quest「貯める王国」クリア！ボス戦 ' + score + '/' + total + '正解 💰')}" target="_blank" rel="noopener">
+        <a class="btn btn-ghost" href="https://x.com/intent/tweet?text=${encodeURIComponent('Money Quest「' + currentArea.areaName + '」クリア！ボス戦 ' + score + '/' + total + '正解 💰 #MoneyQuest')}" target="_blank" rel="noopener">
           X でシェアする
         </a>
 
+        <button class="btn btn-primary" id="mapBtn">エリア選択に戻る</button>
         <button class="btn btn-ghost" id="retryBtn">もう一度プレイする</button>
       </div>`;
 
+    document.getElementById('mapBtn').addEventListener('click', () => {
+      state.phase = 'select';
+      render();
+    });
+
     document.getElementById('retryBtn').addEventListener('click', () => {
-      state.phase      = 'title';
-      state.sceneIndex = 0;
-      state.gold       = AREA1.startGold;
-      state.bossIndex  = 0;
-      state.bossCorrect = 0;
-      state.lastGoldChange = 0;
+      resetState(currentArea);
       render();
     });
   }
