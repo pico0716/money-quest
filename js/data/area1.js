@@ -99,7 +99,7 @@ const AREA1 = {
   ],
 
   links: {
-    quiz: 'https://note.com/moto0716',
+    quiz: 'https://pico0716.github.io/investment-quiz/',
     note: 'https://note.com/moto0716',
     x: 'https://x.com/picopicomoto',
   },
