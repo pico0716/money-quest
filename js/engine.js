@@ -9,8 +9,8 @@
   const AREAS = [
     { data: AREA1, unlocked: true },
     { data: AREA2, unlocked: true },
-    { data: null,  unlocked: false, comingSoon: 'エリア3：使う迷宮' },
-    { data: null,  unlocked: false, comingSoon: 'エリア4：守る要塞' },
+    { data: AREA3, unlocked: true },
+    { data: AREA4, unlocked: true },
   ];
 
   let currentArea = null;
