@@ -269,6 +269,14 @@
     const perfect = score === total;
     const scoreColor = perfect ? 'var(--success)' : 'var(--accent)';
 
+    const currentIdx = AREAS.findIndex(a => a.data === currentArea);
+    const nextAreaEntry = AREAS[currentIdx + 1];
+    const hasNext = nextAreaEntry && nextAreaEntry.unlocked;
+
+    const primaryBtn = hasNext
+      ? `<button class="btn btn-primary" id="nextAreaBtn">次のエリアへ → ${esc(nextAreaEntry.data.areaName.replace(/^エリア\d+：/, ''))}</button>`
+      : `<button class="btn btn-primary" id="mapBtn">エリア選択に戻る</button>`;
+
     $app.innerHTML = `
       <div class="screen clear-screen">
         <div class="clear-title">${perfect ? '🏆 完全勝利！' : '⚔️ 討伐完了！'}</div>
@@ -300,9 +308,17 @@
           X でシェアする
         </a>
 
-        <button class="btn btn-primary" id="mapBtn">エリア選択に戻る</button>
+        ${primaryBtn}
         <button class="btn btn-ghost" id="retryBtn">もう一度プレイする</button>
+        ${hasNext ? `<button class="btn btn-ghost" id="mapBtn">エリア選択に戻る</button>` : ''}
       </div>`;
+
+    if (hasNext) {
+      document.getElementById('nextAreaBtn').addEventListener('click', () => {
+        resetState(nextAreaEntry.data);
+        render();
+      });
+    }
 
     document.getElementById('mapBtn').addEventListener('click', () => {
       state.phase = 'select';
