@@ -297,6 +297,8 @@
           ${currentArea.knowledge.map(k => `<div class="knowledge-item">${esc(k)}</div>`).join('')}
         </div>
 
+        ${primaryBtn}
+
         <div class="adult-card">
           <div class="label">📊 大人の方へ：あなたの投資スタイルは？</div>
           <a href="${encodeURI(currentArea.links.quiz)}" target="_blank" rel="noopener">
@@ -308,7 +310,6 @@
           X でシェアする
         </a>
 
-        ${primaryBtn}
         <button class="btn btn-ghost" id="retryBtn">もう一度プレイする</button>
         ${hasNext ? `<button class="btn btn-ghost" id="mapBtn">エリア選択に戻る</button>` : ''}
       </div>`;
