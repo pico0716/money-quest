@@ -159,18 +159,22 @@ memanto memory sync --project-dir .
 
 ## ステータス
 
-**現在フェーズ：設計深掘り中（実装前）**
+**現在フェーズ：全5エリア完成・公開済み（導線整備待ち）**
+
+公開URL：https://pico0716.github.io/money-quest/
 
 | 項目 | 状況 |
 |---|---|
 | コンセプト | 確定済み（ドラクエ型 RPG 金融教育） |
 | ターゲット設計 | 確定済み（子ども入口・大人本命） |
-| 4エリア構成 | 確定（金融庁4分野とマッピング済み・docs/design.md セクションB） |
+| 5エリア構成 | 確定（両学長5つの力の順：貯める→稼ぐ→増やす→守る→使う・docs/design.md セクションB） |
+| 設計フレーム | 確定（根拠＝金融庁4分野／実践整理＝両学長5つの力・docs/design.md セクションB） |
 | ゲーム体験設計 | 深掘り済み（離脱防止・親子2層設計・docs/design.md セクションA） |
 | 競合差別化 | 整理済み（docs/design.md セクションC） |
 | 収益ロードマップ | Phase 0〜2 策定済み（docs/roadmap.md） |
 | 発信連携（X/note） | 策定済み（docs/marketing.md） |
-| 実装 | エリア1「貯める王国」MVP完成（index.html / css / js） |
+| 実装 | 全5エリア完成・子ども向け改修済み（index.html / css / js / area1〜5.js） |
+| 残タスク | investment-quiz ASP承認待ち→クリア画面にアフィリ導線接続→X モニター募集投稿 |
 
 ---
 

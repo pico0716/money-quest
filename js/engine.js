@@ -6,12 +6,13 @@
 (function () {
   'use strict';
 
+  // 表示順は両学長「お金の大学」5つの力に準拠：貯める→稼ぐ→増やす→守る→使う
   const AREAS = [
-    { data: AREA1, unlocked: true },
-    { data: AREA2, unlocked: true },
-    { data: AREA3, unlocked: true },
-    { data: AREA4, unlocked: true },
-    { data: AREA5, unlocked: true },
+    { data: AREA1, unlocked: true },  // 貯める
+    { data: AREA2, unlocked: true },  // 稼ぐ
+    { data: AREA5, unlocked: true },  // 増やす
+    { data: AREA4, unlocked: true },  // 守る
+    { data: AREA3, unlocked: true },  // 使う
   ];
 
   let currentArea = null;
