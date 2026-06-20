@@ -11,6 +11,7 @@
     { data: AREA2, unlocked: true },
     { data: AREA3, unlocked: true },
     { data: AREA4, unlocked: true },
+    { data: AREA5, unlocked: true },
   ];
 
   let currentArea = null;
