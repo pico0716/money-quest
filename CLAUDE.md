@@ -154,7 +154,7 @@ memanto memory sync --project-dir .
 
 - スクショ・資料はGoogleDrive「X運用」フォルダ（ID: `133kjRbbcZaMYwFWwpZglj6b1RRLIabnO`）に入れる
 - 「フォルダ確認して」と言われたら `/drive` スキルを実行する
-- 処理済みログ：`~/.claude/gdrive_processed.md`（グローバル照合用）
+- 処理済みログ：`context/gdrive_processed.md`（照合用）
 - 処理済みの情報はすべて `context/resources.md` に蓄積される
 
 ## ステータス

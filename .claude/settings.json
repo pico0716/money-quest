@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Google_Drive__search_files",
+      "mcp__claude_ai_Google_Drive__read_file_content"
+    ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -File .claude/hooks/morning.ps1"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "memanto agent activate money-quest",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "memanto memory sync --project-dir .",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
