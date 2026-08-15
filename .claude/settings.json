@@ -16,19 +16,13 @@
         ]
       }
     ],
-    "SessionStart": [
+    "Stop": [
       {
-        "matcher": "startup",
         "hooks": [
           {
             "type": "command",
-            "command": "memanto agent activate money-quest",
-            "timeout": 30
-          },
-          {
-            "type": "command",
-            "command": "memanto memory sync --project-dir .",
-            "timeout": 30
+            "command": "powershell -File .claude/hooks/save_state.ps1",
+            "timeout": 20
           }
         ]
       }
