@@ -11,7 +11,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -File .claude/hooks/morning.ps1"
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/morning.py\""
           }
         ]
       }
@@ -21,7 +21,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -File .claude/hooks/save_state.ps1",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/save_state.py\"",
             "timeout": 20
           }
         ]
