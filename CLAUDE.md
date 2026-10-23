@@ -86,7 +86,8 @@
 | 収益ロードマップ | Phase 0〜2 策定済み（docs/roadmap.md）。**アフィリ導線は2026-10-23から保留**（上の「出口戦略の決定」） |
 | 発信連携（X/note） | 策定済み（docs/marketing.md） |
 | 実装 | 全5エリア完成・子ども向け改修済み（index.html / css / js / area1〜5.js） |
-| 残タスク | Cloudflare版にアクセス計測（Web Analytics）を入れる／オプチャ側に「作った実例」として置く一言（note-fukugyou側で検討）。旧：investment-quiz ASP承認→アフィリ導線接続は保留 |
+| アクセス計測 | Cloudflare Web Analytics 導入済み（2026-10-23・index.html末尾のビーコン。GitHub Pages側は計測対象外のホストなので数字はCloudflare版のみ） |
+| 残タスク | オプチャ側に「作った実例」として置く一言（note-fukugyou側で検討）。旧：investment-quiz ASP承認→アフィリ導線接続は保留 |
 
 ---
 
