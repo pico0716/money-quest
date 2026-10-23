@@ -296,13 +296,6 @@
 
         ${primaryBtn}
 
-        <div class="adult-card">
-          <div class="label">📊 大人の方へ：あなたの投資スタイルは？</div>
-          <a href="${encodeURI(currentArea.links.quiz)}" target="_blank" rel="noopener">
-            投資スタイル診断をやってみる →
-          </a>
-        </div>
-
         <a class="btn btn-ghost" href="https://x.com/intent/tweet?text=${encodeURIComponent('Money Quest「' + currentArea.areaName + '」クリア！ボス戦 ' + score + '/' + total + '正解 💰 #MoneyQuest')}" target="_blank" rel="noopener">
           X でシェアする
         </a>
