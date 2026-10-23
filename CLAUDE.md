@@ -64,9 +64,16 @@
 
 ## ステータス
 
-**現在フェーズ：全5エリア完成・公開済み（導線整備待ち）**
+**現在フェーズ：全5エリア完成・公開済み。大人向けの出口は「AIで作りました→オプチャ」（2026-10-23決定）**
 
-公開URL：https://pico0716.github.io/money-quest/
+公開URL：**https://money-quest.pico-tools.workers.dev/**（Cloudflare・メイン）／https://pico0716.github.io/money-quest/（GitHub Pages・並行で残置）
+
+### 2026-10-23の変更（note-fukugyouのセッションから例外対応で実施）
+
+- **Cloudflareにも公開**：他ツール（note-ledger等）と同じ `pico-tools.workers.dev` にそろえた。公開されるのは `public/` フォルダの中だけ（リポジトリ全体を公開しないため。`.wrangler/` はgitignore）。**ゲームを直したら、`index.html`・`css/`・`js/` を `public/` にコピーしてから、WSLで `npx wrangler deploy`**。GitHub Pagesはpushで自動更新
+- **クリア画面の「大人の方へ：投資スタイル診断」（investment-quiz行き）を撤去**：investment-quiz側の診断後の出口ができていなかったため。元のコードは `docs/archive_adult_investment_cta.md`。各エリアの `links.quiz` は残してある
+- **代わりに「🛠 大人の方へ：このゲームはAIと話しながら作りました→AIで作ってみる部屋（LINEオープンチャット）」カードを設置**（`engine.js` の `maker-card`）
+- **出口戦略の決定（ピコさん・Opus）**：大人は「AIで何か作ってみたい人」と見る。今のアカウントの方向（AI活用支援）に合わせるため。下の「子ども入口・大人本命→証券口座アフィリ」の流れ（docs/roadmap.md）は**保留**。親が来ている手応えが出てから再検討する（SBI証券のアフィリは6月から審査待ちのまま。口座紹介にはPR表記が必要で、子ども向けゲームの先に置く見え方にも注意）
 
 | 項目 | 状況 |
 |---|---|
@@ -76,10 +83,10 @@
 | 設計フレーム | 確定（根拠＝金融庁4分野／実践整理＝両学長5つの力・docs/design.md セクションB） |
 | ゲーム体験設計 | 深掘り済み（離脱防止・親子2層設計・docs/design.md セクションA） |
 | 競合差別化 | 整理済み（docs/design.md セクションC） |
-| 収益ロードマップ | Phase 0〜2 策定済み（docs/roadmap.md） |
+| 収益ロードマップ | Phase 0〜2 策定済み（docs/roadmap.md）。**アフィリ導線は2026-10-23から保留**（上の「出口戦略の決定」） |
 | 発信連携（X/note） | 策定済み（docs/marketing.md） |
 | 実装 | 全5エリア完成・子ども向け改修済み（index.html / css / js / area1〜5.js） |
-| 残タスク | investment-quiz ASP承認待ち→クリア画面にアフィリ導線接続→X モニター募集投稿 |
+| 残タスク | Cloudflare版にアクセス計測（Web Analytics）を入れる／オプチャ側に「作った実例」として置く一言（note-fukugyou側で検討）。旧：investment-quiz ASP承認→アフィリ導線接続は保留 |
 
 ---
 
@@ -96,7 +103,7 @@
 
 ### ⚠️ 実装の現状（必読・誤解しやすい点）
 
-- **全5エリア完成・GitHub Pages公開中**：https://pico0716.github.io/money-quest/
+- **全5エリア完成・Cloudflare（メイン）とGitHub Pagesで公開中**：https://money-quest.pico-tools.workers.dev/ ・ https://pico0716.github.io/money-quest/ 。直したら `public/` へのコピーとデプロイを忘れない（ステータス節参照）
 - **表示順は両学長5つの力の順**：貯める→稼ぐ→増やす→守る→使う（「使う」が最後）
 - **ファイル名と表示順がズレている**（歴史的経緯）：
   - 増やす砦 ＝ `area5.js`（表示は3番目）

@@ -296,6 +296,12 @@
 
         ${primaryBtn}
 
+        <div class="maker-card">
+          <div class="label">🛠 大人の方へ</div>
+          <p>このゲームは、エンジニアじゃない自分が、AIと話しながら作りました。作り方は、オープンチャットで聞けます。</p>
+          <a href="https://line.me/ti/g2/96QoafDo3NzSJIdX81afDZ9Lz1M7R8pvDQpDfQ" target="_blank" rel="noopener">AIで作ってみる部屋（LINEオープンチャット）へ</a>
+        </div>
+
         <a class="btn btn-ghost" href="https://x.com/intent/tweet?text=${encodeURIComponent('Money Quest「' + currentArea.areaName + '」クリア！ボス戦 ' + score + '/' + total + '正解 💰 #MoneyQuest')}" target="_blank" rel="noopener">
           X でシェアする
         </a>

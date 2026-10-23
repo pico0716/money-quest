@@ -373,3 +373,23 @@ body {
 
 .knowledge-item:last-child { border: none; }
 .knowledge-item::before { content: '✓ '; color: var(--success); }
+
+.maker-card {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 18px;
+  width: 100%;
+}
+
+.maker-card .label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; }
+
+.maker-card p { font-size: 0.9rem; line-height: 1.6; margin: 0 0 10px; }
+
+.maker-card a {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: block;
+}
